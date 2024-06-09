@@ -15,7 +15,7 @@ export abstract class BaseController {
 		return this._router;
 	}
 
-	public send<T>(res: Response, statusCode: number, data: T): Response<any, Record<string, any>> {
+	public send<T>(res: Response, statusCode: number, data: T): Response<unknown, Record<string, unknown>> {
 		return res.status(statusCode).json(data);
 	}
 

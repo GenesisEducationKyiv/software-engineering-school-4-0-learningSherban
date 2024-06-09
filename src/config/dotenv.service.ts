@@ -1,5 +1,5 @@
 import { config, DotenvParseOutput } from "dotenv";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import "reflect-metadata";
 
 export interface IDotevnService {

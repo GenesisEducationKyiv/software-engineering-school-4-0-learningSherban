@@ -5,8 +5,8 @@ import 'reflect-metadata'
 export interface IRequestConfig {
     url: string;
     method: "get" | "post" | "put" | "delete";
-    params?: { [key: string]: any };
-    payload?: { [key: string]: any };
+    params?: { [key: string]: unknown };
+    payload?: { [key: string]: unknown };
     responseType?: ResponseType;
     headers?: AxiosHeaders;
 }
@@ -36,9 +36,14 @@ export class BaseAxiosApi {
             };
             const response = await axios.request<T>(req);
             return response;
-        } catch (error: any) {
-            console.log("AXIOS REQUEST ERROR", error);
-            throw new Error("AXIOS REQUEST ERROR");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log("AXIOS REQUEST ERROR", error);
+                throw new Error("AXIOS REQUEST ERROR");
+              } else {
+                console.log("API FUNCTION ERROR", error);
+                throw new Error("API FUNCTION ERROR");
+              }
         }
     }
 }

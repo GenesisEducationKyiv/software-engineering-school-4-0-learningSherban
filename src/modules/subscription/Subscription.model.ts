@@ -1,4 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
+import { BaseModel } from "../../common/types/BaseModel.interface";
 
 export interface ISubscriptionAttributes {
     id: number;
@@ -8,7 +9,7 @@ export interface ISubscriptionAttributes {
 export interface IEmailInput extends Optional<ISubscriptionAttributes, "id"> {}
 export interface IEmailOutput extends Required<ISubscriptionAttributes> {}
 
-export class Subscription extends Model<ISubscriptionAttributes, IEmailInput> implements ISubscriptionAttributes {
+export class Subscription extends Model implements ISubscriptionAttributes {
     id!: number;
     email!: string;
 }
@@ -26,4 +27,6 @@ const tableOptions = {
     },
 };
 
-export default { class: Subscription, tableOptions };
+const SubscriptionModel: BaseModel = { class: Subscription, tableOptions }
+
+export default SubscriptionModel;

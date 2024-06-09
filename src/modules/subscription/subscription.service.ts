@@ -15,32 +15,20 @@ export class SubscriptionService implements ISubscriptionService {
     constructor(@inject(INVERSIFY_TYPES.ISubscriptionRepository) private subscriptionRepository: ISubscriptionRepository) {}
 
     public async create({ email }: CreateSubscriptionDto): Promise<Subscription | null> {
-        try {
-            const existingEmail = await this.subscriptionRepository.getOne({ email });
+        const existingEmail = await this.subscriptionRepository.getOne({ email });
 
-            if (existingEmail) {
-                throw new Error("Email already exist");
-            }
-
-            return this.subscriptionRepository.create(email);
-        } catch (error) {
-            throw error;
+        if (existingEmail) {
+            throw new Error("Email already exist");
         }
+
+        return this.subscriptionRepository.create(email);
     }
 
     public async getAll(): Promise<Subscription[]> {
-        try {
-            return this.subscriptionRepository.getAll();
-        } catch (error) {
-            throw error;
-        }
+        return this.subscriptionRepository.getAll();
     }
 
     public async getOne(email: string) {
-        try {
-            return this.subscriptionRepository.getOne({ email });
-        } catch (error) {
-            throw error;
-        }
+        return this.subscriptionRepository.getOne({ email });
     }
 }

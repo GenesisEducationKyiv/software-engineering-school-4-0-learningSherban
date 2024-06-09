@@ -1,4 +1,4 @@
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { ISubscriptionAttributes, Subscription } from "./Subscription.model";
 import "reflect-metadata";
 

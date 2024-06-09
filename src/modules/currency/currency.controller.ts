@@ -16,7 +16,7 @@ export class CurrencyController extends BaseController implements ICurrencyContr
         this.bindRoutes([{ method: "get", path: "/", handler: this.getRate }]);
     }
 
-    public async getRate(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public async getRate(req: Request, res: Response): Promise<void> {
         try {
             const rate = await this.CurrencyService.getRate();
             this.send(res, 200, rate);

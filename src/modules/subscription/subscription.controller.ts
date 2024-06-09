@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { inject, injectable } from "inversify";
 import "reflect-metadata";
 import { BaseController } from "../../common/base.controller";
@@ -18,7 +18,7 @@ export class SubscriptionController extends BaseController implements ISubscript
         this.bindRoutes([{ method: "post", path: "/", handler: this.create }]);
     }
 
-    public async create({ body }: TypedRequestBody<CreateSubscriptionDto>, res: Response, next: NextFunction): Promise<void> {
+    public async create({ body }: TypedRequestBody<CreateSubscriptionDto>, res: Response): Promise<void> {
         try {
             const subscription = await this.subscriptionService.create(body);
             this.send(res, 200, subscription);

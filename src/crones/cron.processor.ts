@@ -4,13 +4,13 @@ import { INVERSIFY_TYPES } from "../constants/inversify.types";
 import { ICurrencyService } from "../modules/currency/currency.service";
 import { ISubscriptionService } from "../modules/subscription/subscription.service";
 import { INodemailerService } from "../nodemailer/nodemailer.service";
-import { schedule } from "node-cron";
+import { ScheduledTask, schedule } from "node-cron";
 import { IBaseCrone } from "../common/base.crone";
 import { LoggerService } from '../logger/logger.service';
 
 @injectable()
 export class NotifyRateCrone implements IBaseCrone {
-    croneInstance: any;
+    croneInstance!: ScheduledTask;
     constructor(
         @inject(INVERSIFY_TYPES.ICurrencyService) private currencyService: ICurrencyService,
         @inject(INVERSIFY_TYPES.ISubscriptionService) private subscriptionService: ISubscriptionService,
