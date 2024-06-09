@@ -38,11 +38,11 @@ export class BaseAxiosApi {
             return response;
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.log("AXIOS REQUEST ERROR", error);
-                throw new Error("AXIOS REQUEST ERROR");
+                console.log("AXIOS_REQUEST_ERROR", error);
+                throw new Error("AXIOS_REQUEST_ERROR");
               } else {
-                console.log("API FUNCTION ERROR", error);
-                throw new Error("API FUNCTION ERROR");
+                console.log("API_FUNCTION_ERROR", error);
+                throw new Error("API_FUNCTION_ERROR");
               }
         }
     }
