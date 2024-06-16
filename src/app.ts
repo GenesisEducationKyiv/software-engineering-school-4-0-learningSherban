@@ -51,6 +51,7 @@ export class App {
 
             this.logger.log(`Server has been started on port ${this.port}`);
         } catch (error) {
+            console.log("ER", error)
             this.logger.error("Init app error", error);
         }
     }
