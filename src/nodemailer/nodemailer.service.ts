@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import 'reflect-metadata';
 import { Transporter, createTransport } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";

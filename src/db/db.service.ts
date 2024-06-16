@@ -1,8 +1,10 @@
 import { inject, injectable } from "inversify";
-import { Sequelize } from "sequelize";
+import { Model, Sequelize, ModelStatic, ModelAttributes } from "sequelize";
 import "reflect-metadata";
 import { INVERSIFY_TYPES } from "../constants/inversify.types";
 import { IDotevnService } from "../config/dotenv.service";
+import { BaseModel } from "../common/types/BaseModel.interface";
+
 
 export interface IDatabaseService {
     client: Sequelize;
@@ -11,7 +13,7 @@ export interface IDatabaseService {
 
     disconnect(): Promise<void>;
 
-    initModels(models: any): void;
+    initModels(models: BaseModel[]): void;
 }
 
 @injectable()
@@ -47,10 +49,11 @@ export class DatabaseService implements IDatabaseService {
         console.log("Database successfully disconnected ❎");
     }
 
-    initModels(models: { class: any; tableOptions: any }[]) {
+    initModels(models: { class: ModelStatic<Model>, tableOptions: ModelAttributes }[]) {
         models.forEach((model) => {
             model.class.init(model.tableOptions, { sequelize: this._client });
         });
         this._client.sync();
     }
 }
+// SubscriptionModel.class.init

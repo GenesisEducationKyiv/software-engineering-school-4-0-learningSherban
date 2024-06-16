@@ -2,14 +2,14 @@ import axios, { AxiosHeaders, AxiosRequestConfig, AxiosResponse, ResponseType } 
 import { injectable } from "inversify";
 import 'reflect-metadata'
 
-export interface IRequestConfig {
-    url: string;
-    method: "get" | "post" | "put" | "delete";
-    params?: { [key: string]: any };
-    payload?: { [key: string]: any };
-    responseType?: ResponseType;
-    headers?: AxiosHeaders;
-}
+// export interface IRequestConfig {
+//     url: string;
+//     method: "get" | "post" | "put" | "delete";
+//     params?: { [key: string]: unknown };
+//     payload?: { [key: string]: unknown };
+//     responseType?: ResponseType;
+//     headers?: AxiosHeaders;
+// }
 
 @injectable()
 export class BaseAxiosApi {
@@ -19,14 +19,14 @@ export class BaseAxiosApi {
     constructor() {
     }
 
-    public async request<T>(config: IRequestConfig): Promise<AxiosResponse<T>> {
+    public async request<T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         try {
             const req: AxiosRequestConfig = {
                 baseURL: this.baseURL,
                 url: config.url,
                 method: config.method,
                 params: config.params || {},
-                data: config.payload || {},
+                data: config.data || {},
                 ...(config?.responseType && { responseType: config.responseType }),
                 headers: {
                     "Content-Type": "application/json",
@@ -36,9 +36,14 @@ export class BaseAxiosApi {
             };
             const response = await axios.request<T>(req);
             return response;
-        } catch (error: any) {
-            console.log("AXIOS REQUEST ERROR", error);
-            throw new Error("AXIOS REQUEST ERROR");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log("AXIOS_REQUEST_ERROR", error);
+                throw new Error("AXIOS_REQUEST_ERROR");
+              } else {
+                console.log("API_FUNCTION_ERROR", error);
+                throw new Error("API_FUNCTION_ERROR");
+              }
         }
     }
 }

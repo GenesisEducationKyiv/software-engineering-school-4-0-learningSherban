@@ -14,6 +14,7 @@ import { NodemailerService } from "./nodemailer/nodemailer.service";
 import { LoggerService } from "./logger/logger.service";
 
 const appBindingsModule = new ContainerModule((bind: interfaces.Bind) => {
+    bind<DotenvService>(INVERSIFY_TYPES.IDotenvService).to(DotenvService).inSingletonScope();
     bind<SubscriptionRepository>(INVERSIFY_TYPES.ISubscriptionRepository).to(SubscriptionRepository).inSingletonScope();
     bind<SubscriptionService>(INVERSIFY_TYPES.ISubscriptionService).to(SubscriptionService).inSingletonScope();
     bind<SubscriptionController>(INVERSIFY_TYPES.ISubscriptionController).to(SubscriptionController).inSingletonScope();
@@ -21,7 +22,6 @@ const appBindingsModule = new ContainerModule((bind: interfaces.Bind) => {
     bind<CurrencyService>(INVERSIFY_TYPES.ICurrencyService).to(CurrencyService).inSingletonScope();
     bind<CurrencyController>(INVERSIFY_TYPES.ICurrencyController).to(CurrencyController).inSingletonScope();
     bind<DatabaseService>(INVERSIFY_TYPES.IDatabaseService).to(DatabaseService).inSingletonScope();
-    bind<DotenvService>(INVERSIFY_TYPES.IDotenvService).to(DotenvService).inSingletonScope();
     bind<NodemailerService>(INVERSIFY_TYPES.INodemailerService).to(NodemailerService).inSingletonScope();
     bind<NotifyRateCrone>(INVERSIFY_TYPES.INotifyRateCrone).to(NotifyRateCrone).inSingletonScope();
     bind<LoggerService>(INVERSIFY_TYPES.ILoggerService).to(LoggerService).inSingletonScope();
