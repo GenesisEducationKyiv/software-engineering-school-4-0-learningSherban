@@ -56,4 +56,3 @@ export class DatabaseService implements IDatabaseService {
         this._client.sync();
     }
 }
-// SubscriptionModel.class.init
