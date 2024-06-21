@@ -12,6 +12,8 @@ import { DotenvService } from "./config/dotenv.service";
 import { NotifyRateCrone } from "./crones/cron.processor";
 import { NodemailerService } from "./nodemailer/nodemailer.service";
 import { LoggerService } from "./logger/logger.service";
+import { PrivatBankApi } from "./modules/currency/api/privatbank.api";
+import { OpenExchangeStrategy, PrivatBankStrategy, StrategySelector } from "./modules/currency/currency.strategy";
 
 const appBindingsModule = new ContainerModule((bind: interfaces.Bind) => {
     bind<DotenvService>(INVERSIFY_TYPES.IDotenvService).to(DotenvService).inSingletonScope();
@@ -19,6 +21,10 @@ const appBindingsModule = new ContainerModule((bind: interfaces.Bind) => {
     bind<SubscriptionService>(INVERSIFY_TYPES.ISubscriptionService).to(SubscriptionService).inSingletonScope();
     bind<SubscriptionController>(INVERSIFY_TYPES.ISubscriptionController).to(SubscriptionController).inSingletonScope();
     bind<OpenExchangeApi>(INVERSIFY_TYPES.IOpenExchangeApi).to(OpenExchangeApi).inSingletonScope();
+    bind<StrategySelector>(INVERSIFY_TYPES.ICurrencyStrategy).to(StrategySelector).inSingletonScope();
+    bind<PrivatBankStrategy>(INVERSIFY_TYPES.IPrivatBankStrategy).to(PrivatBankStrategy).inSingletonScope();
+    bind<OpenExchangeStrategy>(INVERSIFY_TYPES.IOpenExchangeStrategy).to(OpenExchangeStrategy).inSingletonScope();
+    bind<PrivatBankApi>(INVERSIFY_TYPES.IPrivatBankApi).to(PrivatBankApi).inSingletonScope();
     bind<CurrencyService>(INVERSIFY_TYPES.ICurrencyService).to(CurrencyService).inSingletonScope();
     bind<CurrencyController>(INVERSIFY_TYPES.ICurrencyController).to(CurrencyController).inSingletonScope();
     bind<DatabaseService>(INVERSIFY_TYPES.IDatabaseService).to(DatabaseService).inSingletonScope();

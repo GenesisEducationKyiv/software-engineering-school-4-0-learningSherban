@@ -11,14 +11,14 @@ export interface ICurrencyController extends BaseController {
 
 @injectable()
 export class CurrencyController extends BaseController implements ICurrencyController {
-    constructor(@inject(INVERSIFY_TYPES.ICurrencyService) private CurrencyService: ICurrencyService) {
+    constructor(@inject(INVERSIFY_TYPES.ICurrencyService) private сurrencyService: ICurrencyService) {
         super();
         this.bindRoutes([{ method: "get", path: "/", handler: this.getRate }]);
     }
 
     public async getRate(req: Request, res: Response): Promise<void> {
         try {
-            const rate = await this.CurrencyService.getRate();
+            const rate = await this.сurrencyService.getRate();
             this.send(res, 200, rate);
         } catch (error) {
             this.send(res, 409, "Rate recieve error");

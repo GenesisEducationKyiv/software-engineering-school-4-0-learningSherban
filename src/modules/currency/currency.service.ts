@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import "reflect-metadata";
 import { INVERSIFY_TYPES } from "../../constants/inversify.types";
-import { IExchangeApi } from "./api/open-exchange.api";
+import { CurrencyStrategies, IStrategySelector } from "./currency.strategy";
 
 export interface ICurrencyService {
     getRate(): Promise<number | null>;
@@ -9,9 +9,23 @@ export interface ICurrencyService {
 
 @injectable()
 export class CurrencyService implements ICurrencyService {
-    constructor(@inject(INVERSIFY_TYPES.IOpenExchangeApi) private openExchangeApi: IExchangeApi) {}
+    constructor(@inject(INVERSIFY_TYPES.ICurrencyStrategy) private currencyStrategy: IStrategySelector) {}
 
     public async getRate(): Promise<number | null> {
-        return this.openExchangeApi.getRate("UAH");
+        let strategy = null;
+        let rate = null;
+        try {
+            let strategy = this.currencyStrategy.select(CurrencyStrategies.OPENEXCHANGE);
+            rate = await strategy.getRate("UAH");
+            if (!rate) {
+                strategy = this.currencyStrategy.select(CurrencyStrategies.PRIVAT);
+                rate = await strategy.getRate("UAH");
+            }
+            return rate;
+        } catch (error) {
+            strategy = this.currencyStrategy.select(CurrencyStrategies.PRIVAT);
+            rate = await strategy.getRate("UAH");
+            return rate
+        }
     }
 }
