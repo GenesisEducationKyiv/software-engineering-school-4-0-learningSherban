@@ -23,9 +23,12 @@ describe("Application", () => {
         mockNotifyRateCrone = mock<NotifyRateCrone>(NotifyRateCrone);
         mockLogger = mock<LoggerService>(LoggerService);
 
+
         when(mockDatabaseService.connect()).thenResolve(); // Resolve or reject based on your test case
         when(mockDatabaseService.initModels([expect.anything()])).thenReturn();
         when(mockNotifyRateCrone.create()).thenReturn();
+        when(mockSubscriptionController.router).thenReturn(jest.fn() as any);
+        when(mockCurrencyController.router).thenReturn(jest.fn() as any);
 
         appDIContainer.rebind(INVERSIFY_TYPES.ISubscriptionController).toConstantValue(instance(mockSubscriptionController));
         appDIContainer.rebind(INVERSIFY_TYPES.ICurrencyController).toConstantValue(instance(mockCurrencyController));
