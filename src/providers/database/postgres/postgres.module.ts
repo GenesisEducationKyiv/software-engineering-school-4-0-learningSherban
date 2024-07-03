@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from "@nestjs/typeorm";
 import { PostgresConfigModule } from "src/config/database/postgres/config.module";
 import { PostgresConfigService } from "src/config/database/postgres/config.service";
+import { Subscription } from "src/modules/subscription/entities/subscription.entity";
 
 @Module({
     imports: [
@@ -15,9 +16,8 @@ import { PostgresConfigService } from "src/config/database/postgres/config.servi
                 username: pgConfigService.user,
                 password: pgConfigService.password,
                 database: pgConfigService.name,
-                entities: [
-                    // ... All MySQL based schemas/entities
-                ],
+                entities: [Subscription],
+                synchronize: true,
             }),
             inject: [PostgresConfigService],
         } as TypeOrmModuleAsyncOptions),
