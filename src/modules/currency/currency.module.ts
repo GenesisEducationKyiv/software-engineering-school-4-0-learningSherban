@@ -5,11 +5,11 @@ import { OpenExchangeApi } from "./api/openexchange.api";
 import { PrivatBankApi } from "./api/privatbank.api";
 import { CurrencyChain } from "./currency.chain";
 import { HttpModule } from "@nestjs/axios";
-import { DotenvConfigModule } from "src/config/dotenv/config.module";
+
 @Module({
-    imports: [HttpModule, DotenvConfigModule],
-    controllers: [CurrencyController],
-    providers: [CurrencyService, CurrencyChain, PrivatBankApi, OpenExchangeApi],
-    exports: [CurrencyService],
+  imports: [HttpModule],
+  controllers: [CurrencyController],
+  providers: [CurrencyService, CurrencyChain, PrivatBankApi, OpenExchangeApi],
+  exports: [CurrencyService],
 })
 export class CurrencyModule {}
