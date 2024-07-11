@@ -1,23 +1,28 @@
 import { Module } from "@nestjs/common";
 import { MailerModule } from "@nestjs-modules/mailer";
-import { NodemailerConfigModule } from "src/config/mail/nodemailer/config.module";
-import { NodemailerConfigService } from "src/config/mail/nodemailer/config.service";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { NodemailerConfig } from "../../../config/nodemailer.config";
 
 @Module({
-    imports: [
-        MailerModule.forRootAsync({
-            imports: [NodemailerConfigModule],
-            useFactory: async (nodemailerConfigService: NodemailerConfigService) => ({
-                transport: {
-                    host: "gmail",
-                    auth: {
-                        user: nodemailerConfigService.user,
-                        pass: nodemailerConfigService.password,
-                    },
-                },
-            }),
-            inject: [NodemailerConfigService],
-        }),
-    ],
+  imports: [
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const { email, password } =
+          configService.get<NodemailerConfig>("nodemailer")!;
+
+        return {
+          transport: {
+            host: "gmail",
+            auth: {
+              user: email,
+              pass: password,
+            },
+          },
+        };
+      },
+      inject: [ConfigService],
+    }),
+  ],
 })
 export class NodemailerProviderModule {}
