@@ -1,0 +1,92 @@
+version: "3.5"
+
+services:
+    api_gateway:
+        build: ./api-gateway
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./api-gateway/src:/usr/src/app/src
+        command: npm run start:dev
+        environment:
+            - PORT=3000
+    subscription_microservice:
+        build: ./subscription-microservice
+        volumes:
+            - ./subscription-microservice/src:/usr/src/app/src
+        depends_on:
+            - db
+        command: npm run start:dev
+    mail_sender_microservice:
+        build: ./mail-sender-microservice
+        volumes:
+            - ./mail-sender-microservice/src:/usr/src/app/src
+        command: npm run start:dev
+    currency_microservice:
+        build: ./currency-microservice
+        volumes:
+            - ./currency-microservice/src:/usr/src/app/src
+        command: npm run start:dev
+    nats:
+        image: nats
+        ports:
+            - 4222:4222
+    db:
+        image: postgres
+        restart: always
+        environment:
+        - POSTGRES_PASSWORD=admin
+        container_name: postgres
+        volumes:
+            - ./pgdata:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+    pgadmin:
+        image: dpage/pgadmin4
+        restart: always
+        container_name: nest-pgadmin4
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+            - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+        ports:
+            - "5050:80"
+        depends_on:
+            - db
+
+# services:
+#     db:
+#         image: postgres
+#         restart: always
+#         environment:
+#             - POSTGRES_PASSWORD=admin
+#         container_name: postgres
+#         volumes:
+#             - ./pgdata:/var/lib/postgresql/data
+#         ports:
+#             - "5432:5432"
+
+#     app:
+#         build:
+#             context: .
+#             dockerfile: Dockerfile
+#         container_name: nest-docker-postgres
+#         environment:
+#             - PORT=${PORT}
+#         ports:
+#             - "3000:3000"
+#         depends_on:
+#             - db
+#         volumes:
+#             - ./src:/app/src
+
+#     pgadmin:
+#         image: dpage/pgadmin4
+#         restart: always
+#         container_name: nest-pgadmin4
+#         environment:
+#             - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+#             - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+#         ports:
+#             - "5050:80"
+#         depends_on:
+#             - db
